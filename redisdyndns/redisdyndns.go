@@ -14,10 +14,18 @@ import (
 
 const ttl = 60
 
+type Database interface {
+	Query(ctx context.Context, query string) (string, error)
+}
+
+type RedisDatabase struct {
+	Client redis.Client
+}
+
 type RedisDynDns struct {
-	Next    plugin.Handler
-	Domains []string
-	Client  redis.Client
+	Next     plugin.Handler
+	Domains  []string
+	Database Database
 }
 
 // newRedisDynDns creates a new plugin handler that uses Redis at localhost:6379
@@ -25,11 +33,13 @@ func NewRedisDynDns(next plugin.Handler, domains []string) *RedisDynDns {
 	rd := RedisDynDns{
 		Next:    next,
 		Domains: domains,
-		Client: *redis.NewClient(&redis.Options{
-			Addr:     "localhost:6379",
-			Password: "",
-			DB:       0,
-		}),
+		Database: &RedisDatabase{
+			Client: *redis.NewClient(&redis.Options{
+				Addr:     "localhost:6379",
+				Password: "",
+				DB:       0,
+			}),
+		},
 	}
 	return &rd
 }
@@ -90,7 +100,7 @@ func addAnswer(ip net.IP, state *request.Request, resp *dns.Msg) {
 
 // getIp reads an IP address from Redis
 func (rd *RedisDynDns) getIp(ctx context.Context, key string) (net.IP, error) {
-	result, err := rd.Client.Get(ctx, key).Result()
+	result, err := rd.Database.Query(ctx, key)
 	if err != nil {
 		if err == redis.Nil {
 			return nil, nil // domain not found
@@ -122,4 +132,8 @@ func (rd *RedisDynDns) matches(domain string) bool {
 		}
 	}
 	return false
+}
+
+func (rdb *RedisDatabase) Query(ctx context.Context, query string) (string, error) {
+	return rdb.Client.Get(ctx, query).Result()
 }
