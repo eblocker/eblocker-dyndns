@@ -22,10 +22,12 @@ var directives = []string{
 	"redisdyndns",
 }
 
+// init sets up a minimal set of CoreDNS plugins
 func init() {
 	dnsserver.Directives = directives
 }
 
+// main starts the CoreDNS server
 func main() {
 	coremain.Run()
 }

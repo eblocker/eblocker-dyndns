@@ -70,14 +70,14 @@ func TestServeDns(t *testing.T) {
 			if rec.Rcode != tt.expectedRcode {
 				t.Errorf("Expected code %d, but got %d", tt.expectedRcode, rec.Rcode)
 			}
-			checkAnswer(rec.Msg.Answer, tt.expectedResult, t)
+			checkAnswer(rec.Msg.Answer, tt.domain, tt.expectedResult, t)
 		})
 	}
 }
 
 // checkAnswer checks whether there is exactly one record with the expected IP address
 // or zero records if there is no IP address expected
-func checkAnswer(rr []dns.RR, expectedIP net.IP, t *testing.T) {
+func checkAnswer(rr []dns.RR, domain string, expectedIP net.IP, t *testing.T) {
 	if expectedIP == nil {
 		if len(rr) != 0 {
 			t.Errorf("Expected zero records in answer, but got: %d", len(rr))
@@ -97,6 +97,9 @@ func checkAnswer(rr []dns.RR, expectedIP net.IP, t *testing.T) {
 		}
 		if !gotIP.Equal(expectedIP) {
 			t.Errorf("Expected %v but got %v", expectedIP, gotIP)
+		}
+		if domain != rr[0].Header().Name {
+			t.Errorf("Expected name %s in record, but got: %s", domain, rr[0].Header().Name)
 		}
 	}
 }
