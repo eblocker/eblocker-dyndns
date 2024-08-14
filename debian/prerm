@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ "$1" = remove ] ; then
+    # Stop services:
+    systemctl stop eblocker-dyndns
+fi
+
+exit 0

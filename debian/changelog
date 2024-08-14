@@ -1,0 +1,5 @@
+eblocker-dyndns (1.0-0) stable; urgency=low
+
+  * Reimplementation as CoreDNS plugin
+
+ -- eBlocker Open Source <dev@eblocker.org>  Wed, 14 Aug 2024 11:00:00 +0000

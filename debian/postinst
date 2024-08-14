@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = configure ] ; then
+    echo configure
+
+    # Install services:
+    systemctl enable eblocker-dyndns
+
+    # (Re)start services:
+    systemctl restart eblocker-dyndns
+
+fi
+
+exit 0
+

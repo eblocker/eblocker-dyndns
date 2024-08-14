@@ -1,0 +1,12 @@
+Source: eblocker-dyndns
+Section: contrib/net
+Priority: extra
+Maintainer: eBlocker Open Source <dev@eblocker.org>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.3
+Homepage: https://github.com/eblocker/eblocker-dyndns
+
+Package: eblocker-dyndns
+Architecture: any
+Depends: redis-server, ${shlibs:Depends}
+Description: eBlocker Mobile DynDNS Server
