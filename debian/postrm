@@ -1,7 +1,0 @@
-#!/bin/sh
-
-if [ "$1" = remove ] ; then
-    echo remove
-    # Remove services
-    systemctl disable eblocker-dyndns
-fi
