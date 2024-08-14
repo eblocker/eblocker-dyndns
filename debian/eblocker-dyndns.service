@@ -1,0 +1,14 @@
+[Unit]
+Description=eBlocker Mobile DynDNS Server
+Documentation=https://github.com/eblocker/eblocker-dyndns
+After=network.target
+
+[Service]
+User=edyndns
+WorkingDirectory=/opt/eblocker-dyndns
+ExecStart=/opt/eblocker-dyndns/bin/eblocker-dyndns
+ExecReload=/bin/kill -SIGUSR1 $MAINPID
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
