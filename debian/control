@@ -8,5 +8,5 @@ Homepage: https://github.com/eblocker/eblocker-dyndns
 
 Package: eblocker-dyndns
 Architecture: any
-Depends: redis-server, ${shlibs:Depends}
+Depends: redis-server
 Description: eBlocker Mobile DynDNS Server
